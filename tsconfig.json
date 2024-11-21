@@ -1,0 +1,28 @@
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "paths": {
+      "app/*": ["app/*"]
+    },
+    "declaration": false,
+    "lib": ["es6", "dom", "es2018", "es2017", "es2020"],
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+    "sourceMap": true,
+    "target": "es6",
+    "jsx": "react-jsx",
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": false,
+    "skipLibCheck": true,
+    "noEmit": true,
+    "noImplicitAny": false,
+    "noImplicitThis": true,
+    "noImplicitReturns": true,
+    "strictNullChecks": true,
+    "isolatedModules": true,
+    "useDefineForClassFields": true
+  },
+  "exclude": ["node_modules", "public", "vendor"],
+  "compileOnSave": false
+}
