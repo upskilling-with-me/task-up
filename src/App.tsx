@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import { Button } from "@mui/material";
 
 /*
 Header Component
@@ -39,12 +40,19 @@ const Header: React.FC<HeaderProps> = ({ theme, setTheme }) => {
 	return (
 		<div className="header">
 			<h1>Task Us</h1>
-			<button type="button" onClick={handleThemeChange}>
+			<Button
+				type="button"
+				variant="outlined"
+				color="inherit"
+				onClick={handleThemeChange}
+			>
 				{theme}
-			</button>
+			</Button>
 		</div>
 	);
 };
+
+
 
 const App: React.FC = () => {
 	const [theme, SetTheme] = useState<Theme>("light");
