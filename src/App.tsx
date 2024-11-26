@@ -1,10 +1,12 @@
-import { useState } from "react";
+import { Dispatch, SetStateAction, useRef, useState } from "react";
 import "./App.css";
 import {
 	Button,
 	Checkbox,
 	TextField,
 } from "@mui/material";
+
+import { v4 as uuidv4 } from 'uuid';
 
 /*
 Header Component
@@ -108,6 +110,41 @@ const TodoList: React.FC<TodoListProps> = ({ todos }) => {
 	);
 };
 
+interface AddTodoProp {
+	todos: Todo[];
+    addTodo: Dispatch<SetStateAction<Todo[]>>;
+}
+
+const AddTodo: React.FC<AddTodoProp> = ({ todos, addTodo }) => {
+	const inputRef = useRef<HTMLInputElement | null>(null);
+  
+	const handleAddTodo = () => {
+	  if (!inputRef.current || !inputRef.current.value ) return;
+  
+	  const newTodo: Todo = {
+		id: uuidv4(),
+		description: inputRef.current.value.trim(),
+		status: "todo",
+	  };
+  
+	  addTodo([...todos, newTodo]);
+	  inputRef.current.value = "";
+	};
+  
+	return (
+	  <div className="todo-card">
+		<TextField
+		  id="standard-basic"
+		  label="Add New Todo"
+		  variant="filled"
+		  inputRef={inputRef}
+		/>
+		<Button variant="contained" color="primary" onClick={handleAddTodo}>
+		  Add
+		</Button>
+	  </div>
+	);
+  };
 
 const App: React.FC = () => {
 	const [theme, SetTheme] = useState<Theme>("light");
@@ -116,6 +153,7 @@ const App: React.FC = () => {
 	return (
 		<div>
 			<Header theme={theme} setTheme={SetTheme} />
+			<AddTodo todos={todoList} addTodo={SetTodoList} />
 			<TodoList todos={todoList} />
 		</div>
 	);
