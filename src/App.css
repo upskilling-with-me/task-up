@@ -20,7 +20,15 @@
     padding: 20px;
 }
 
+.todo-item {
+    display: flex;
+    gap: 10px;
+    padding: 20px;
+    align-items: center;
+    justify-content: center;
 
+
+}
 
 ul {
     list-style-type: none;

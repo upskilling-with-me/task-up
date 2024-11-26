@@ -78,9 +78,6 @@ const TodoItem: React.FC<TodoItemProps> = ({ description, status }) => {
 			<Checkbox checked={status == 'done'} />
 			<span>{status}</span>
 			<TextField label={description} />
-			<Button variant="contained" color="error">
-				delete
-			</Button>
 		</div>
 	);
 };
@@ -94,16 +91,26 @@ const TODO_LIST: Todo[] = [
 
 interface TodoListProps {
 	todos: Todo[];
+	updateTodo: Dispatch<SetStateAction<Todo[]>>;
 }
 
-const TodoList: React.FC<TodoListProps> = ({ todos }) => {
+const TodoList: React.FC<TodoListProps> = ({ todos, updateTodo }) => {
+	const handleDeleteTodo = (id: string) => {
+		updateTodo(todos.filter((todo) => todo.id !== id));
+	}
+
 	return (
 		<div className="container">
 			<ul className="todo-list-card">
 				{todos.map((todo) => (
+
 					<li key={todo.id}>
-						<TodoItem description={todo.description} status={todo.status} />
+						<div className="todo-item">
+							<TodoItem description={todo.description} status={todo.status} />
+							<Button variant="contained" color="error" onClick={() => handleDeleteTodo(todo.id)}>Delete</Button>
+						</div>
 					</li>
+
 				))}
 			</ul>
 		</div>
@@ -112,39 +119,39 @@ const TodoList: React.FC<TodoListProps> = ({ todos }) => {
 
 interface AddTodoProp {
 	todos: Todo[];
-    addTodo: Dispatch<SetStateAction<Todo[]>>;
+	addTodo: Dispatch<SetStateAction<Todo[]>>;
 }
 
 const AddTodo: React.FC<AddTodoProp> = ({ todos, addTodo }) => {
 	const inputRef = useRef<HTMLInputElement | null>(null);
-  
+
 	const handleAddTodo = () => {
-	  if (!inputRef.current || !inputRef.current.value ) return;
-  
-	  const newTodo: Todo = {
-		id: uuidv4(),
-		description: inputRef.current.value.trim(),
-		status: "todo",
-	  };
-  
-	  addTodo([...todos, newTodo]);
-	  inputRef.current.value = "";
+		if (!inputRef.current || !inputRef.current.value) return;
+
+		const newTodo: Todo = {
+			id: uuidv4(),
+			description: inputRef.current.value.trim(),
+			status: "todo",
+		};
+
+		addTodo([...todos, newTodo]);
+		inputRef.current.value = "";
 	};
-  
+
 	return (
-	  <div className="todo-card">
-		<TextField
-		  id="standard-basic"
-		  label="Add New Todo"
-		  variant="filled"
-		  inputRef={inputRef}
-		/>
-		<Button variant="contained" color="primary" onClick={handleAddTodo}>
-		  Add
-		</Button>
-	  </div>
+		<div className="todo-card">
+			<TextField
+				id="standard-basic"
+				label="Add New Todo"
+				variant="filled"
+				inputRef={inputRef}
+			/>
+			<Button variant="contained" color="primary" onClick={handleAddTodo}>
+				Add
+			</Button>
+		</div>
 	);
-  };
+};
 
 const App: React.FC = () => {
 	const [theme, SetTheme] = useState<Theme>("light");
@@ -154,7 +161,7 @@ const App: React.FC = () => {
 		<div>
 			<Header theme={theme} setTheme={SetTheme} />
 			<AddTodo todos={todoList} addTodo={SetTodoList} />
-			<TodoList todos={todoList} />
+			<TodoList todos={todoList} updateTodo={SetTodoList} />
 		</div>
 	);
 };
