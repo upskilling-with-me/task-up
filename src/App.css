@@ -24,3 +24,20 @@
 ul {
     list-style-type: none;
 }
+
+.todo-done {
+    text-decoration: line-through;
+}
+
+.footer {
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    justify-content: space-between;
+    align-items: center;
+    background: antiquewhite;
+    width: 100%;
+    border: 2px solid black;
+    height: 50px;
+    font-size: large;
+}

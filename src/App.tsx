@@ -1,37 +1,13 @@
-import { Dispatch, SetStateAction, useRef, useState } from "react";
+import React, { Dispatch, SetStateAction, useRef, useState } from "react";
 import "./App.css";
 import {
 	Button,
 	Checkbox,
-	TextField,
+	Input,
+	TextField
 } from "@mui/material";
 
-import { v4 as uuidv4 } from 'uuid';
-
-/*
-Header Component
-  Title
-  Theme
-
-AddTodo Component
-  Input Field
-  Add Button
-
-TodoList Component
-  List of Todos
-
-Todo Component
-  Checkbox
-  Description
-  Edit Button
-  Delete Button
-
-Footer Component
-  Total Todos
-  Filter Todos Button
-  Sort Todos Button
-  Clear All Todos Button
-*/
+import { v4 as uuidv4 } from "uuid";
 
 type Theme = "light" | "dark";
 type TodoStatus = "todo" | "done";
@@ -67,17 +43,12 @@ interface Todo {
 	status: TodoStatus;
 }
 
-interface TodoItemProps {
-	description: string;
-	status: TodoStatus;
-}
-
 
 const TODO_LIST: Todo[] = [
-	{ id: '1', description: "Buy Grocery", status: "todo" },
-	{ id: '2', description: "Go for a run", status: "todo" },
-	{ id: '3', description: "Do dishes", status: "todo" },
-	{ id: '4', description: "Buy milk", status: "done" },
+	{ id: "1", description: "Buy Grocery", status: "todo" },
+	{ id: "2", description: "Go for a run", status: "todo" },
+	{ id: "3", description: "Do dishes", status: "todo" },
+	{ id: "4", description: "Buy milk", status: "done" },
 ];
 
 interface TodoListProps {
@@ -86,11 +57,10 @@ interface TodoListProps {
 }
 
 const TodoList: React.FC<TodoListProps> = ({ todos, updateTodo }) => {
-	
 	const handleStatusUpdate = (id: string) => {
 		updateTodo(
 			todos.map((todo) =>
-				todo.id === id ? { ...todo, status: todo.status === 'todo' ? 'done' : 'todo' } : todo
+				todo.id === id ? { ...todo, status: todo.status === "todo" ? "done" : "todo" } : todo
 			)
 		);
 	}
@@ -106,9 +76,10 @@ const TodoList: React.FC<TodoListProps> = ({ todos, updateTodo }) => {
 
 					<li key={todo.id}>
 						<div className="todo-item">
-							<Checkbox checked={todo.status == 'done'} onChange={() => handleStatusUpdate(todo.id)} />
-							<span>{todo.status}</span>
-							<TextField label={todo.description} />
+							<Checkbox checked={todo.status == "done"} onChange={() => handleStatusUpdate(todo.id)} />
+							<Input
+								placeholder={todo.description}
+								className={todo.status == "done" ? "todo-done" : ""} />
 							<Button variant="contained" color="error" onClick={() => handleDeleteTodo(todo.id)}>Delete</Button>
 						</div>
 					</li>
@@ -154,6 +125,18 @@ const AddTodo: React.FC<AddTodoProp> = ({ todos, addTodo }) => {
 	);
 };
 
+interface FooterProps {
+	todos: Todo[];
+}
+
+const Footer: React.FC<FooterProps> = ({ todos }) => {
+
+	return (
+		<div className="footer">
+			<span>Total todos: {todos.length}</span>
+		</div>
+	);
+}
 const App: React.FC = () => {
 	const [theme, SetTheme] = useState<Theme>("light");
 	const [todoList, SetTodoList] = useState(TODO_LIST);
@@ -163,6 +146,7 @@ const App: React.FC = () => {
 			<Header theme={theme} setTheme={SetTheme} />
 			<AddTodo todos={todoList} addTodo={SetTodoList} />
 			<TodoList todos={todoList} updateTodo={SetTodoList} />
+			<Footer todos={todoList} />
 		</div>
 	);
 };
