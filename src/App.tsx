@@ -72,15 +72,6 @@ interface TodoItemProps {
 	status: TodoStatus;
 }
 
-const TodoItem: React.FC<TodoItemProps> = ({ description, status }) => {
-	return (
-		<div className="todo-card">
-			<Checkbox checked={status == 'done'} />
-			<span>{status}</span>
-			<TextField label={description} />
-		</div>
-	);
-};
 
 const TODO_LIST: Todo[] = [
 	{ id: '1', description: "Buy Grocery", status: "todo" },
@@ -95,6 +86,15 @@ interface TodoListProps {
 }
 
 const TodoList: React.FC<TodoListProps> = ({ todos, updateTodo }) => {
+	
+	const handleStatusUpdate = (id: string) => {
+		updateTodo(
+			todos.map((todo) =>
+				todo.id === id ? { ...todo, status: todo.status === 'todo' ? 'done' : 'todo' } : todo
+			)
+		);
+	}
+
 	const handleDeleteTodo = (id: string) => {
 		updateTodo(todos.filter((todo) => todo.id !== id));
 	}
@@ -106,11 +106,12 @@ const TodoList: React.FC<TodoListProps> = ({ todos, updateTodo }) => {
 
 					<li key={todo.id}>
 						<div className="todo-item">
-							<TodoItem description={todo.description} status={todo.status} />
+							<Checkbox checked={todo.status == 'done'} onChange={() => handleStatusUpdate(todo.id)} />
+							<span>{todo.status}</span>
+							<TextField label={todo.description} />
 							<Button variant="contained" color="error" onClick={() => handleDeleteTodo(todo.id)}>Delete</Button>
 						</div>
 					</li>
-
 				))}
 			</ul>
 		</div>
@@ -139,7 +140,7 @@ const AddTodo: React.FC<AddTodoProp> = ({ todos, addTodo }) => {
 	};
 
 	return (
-		<div className="todo-card">
+		<div className="todo-item">
 			<TextField
 				id="standard-basic"
 				label="Add New Todo"

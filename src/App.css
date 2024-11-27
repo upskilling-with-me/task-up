@@ -12,13 +12,6 @@
     font-size: 24px;
 }
 
-.todo-card {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    padding: 20px;
-}
 
 .todo-item {
     display: flex;
@@ -26,8 +19,6 @@
     padding: 20px;
     align-items: center;
     justify-content: center;
-
-
 }
 
 ul {
