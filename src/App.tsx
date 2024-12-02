@@ -46,14 +46,14 @@ const TODO_LIST: Todo[] = [
 ];
 
 interface TodoListProps {
-	todos: Todo[];
-	updateTodo: Dispatch<SetStateAction<Todo[]>>;
+	todoList: Todo[];
+	setTodoList: Dispatch<SetStateAction<Todo[]>>;
 }
 
-const TodoList = ({ todos, updateTodo }: TodoListProps) => {
+const TodoList = ({ todoList, setTodoList }: TodoListProps) => {
 	const handleStatusUpdate = (id: string) => {
-		updateTodo(
-			todos.map((todo) =>
+		setTodoList(
+			todoList.map((todo) =>
 				todo.id === id
 					? { ...todo, status: todo.status === "todo" ? "done" : "todo" }
 					: todo,
@@ -62,13 +62,13 @@ const TodoList = ({ todos, updateTodo }: TodoListProps) => {
 	};
 
 	const handleDeleteTodo = (id: string) => {
-		updateTodo(todos.filter((todo) => todo.id !== id));
+		setTodoList(todoList.filter((todo) => todo.id !== id));
 	};
 
 	return (
 		<div className="container">
 			<ul className="todo-list-card">
-				{todos.map((todo) => (
+				{todoList.map((todo) => (
 					<li key={todo.id}>
 						<div className="todo-item">
 							<Checkbox
@@ -95,11 +95,11 @@ const TodoList = ({ todos, updateTodo }: TodoListProps) => {
 };
 
 interface AddTodoProp {
-	todos: Todo[];
-	addTodo: Dispatch<SetStateAction<Todo[]>>;
+	todoList: Todo[];
+	setTodoList: Dispatch<SetStateAction<Todo[]>>;
 }
 
-const AddTodo = ({ todos, addTodo }: AddTodoProp) => {
+const AddTodo = ({ todoList, setTodoList }: AddTodoProp) => {
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
 	const handleAddTodo = () => {
@@ -111,7 +111,7 @@ const AddTodo = ({ todos, addTodo }: AddTodoProp) => {
 			status: "todo",
 		};
 
-		addTodo([...todos, newTodo]);
+		setTodoList([...todoList, newTodo]);
 		inputRef.current.value = "";
 	};
 
@@ -131,13 +131,13 @@ const AddTodo = ({ todos, addTodo }: AddTodoProp) => {
 };
 
 interface FooterProps {
-	todos: Todo[];
+	todoList: Todo[];
 }
 
-const Footer = ({ todos }: FooterProps) => {
+const Footer = ({ todoList }: FooterProps) => {
 	return (
 		<div className="footer">
-			<span>Total todos: {todos.length}</span>
+			<span>Total todos: {todoList.length}</span>
 		</div>
 	);
 };
@@ -148,9 +148,9 @@ const App = () => {
 	return (
 		<div>
 			<Header theme={theme} setTheme={SetTheme} />
-			<AddTodo todos={todoList} addTodo={SetTodoList} />
-			<TodoList todos={todoList} updateTodo={SetTodoList} />
-			<Footer todos={todoList} />
+			<AddTodo todoList={todoList} setTodoList={SetTodoList} />
+			<TodoList todoList={todoList} setTodoList={SetTodoList} />
+			<Footer todoList={todoList} />
 		</div>
 	);
 };
