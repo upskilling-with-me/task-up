@@ -12,7 +12,7 @@ interface HeaderProps {
 	setTheme: React.Dispatch<React.SetStateAction<Theme>>;
 }
 
-const Header: React.FC<HeaderProps> = ({ theme, setTheme }) => {
+const Header = ({ theme, setTheme }: HeaderProps) => {
 	const handleThemeChange = () => {
 		setTheme(theme === "light" ? "dark" : "light");
 	};
@@ -50,7 +50,7 @@ interface TodoListProps {
 	updateTodo: Dispatch<SetStateAction<Todo[]>>;
 }
 
-const TodoList: React.FC<TodoListProps> = ({ todos, updateTodo }) => {
+const TodoList = ({ todos, updateTodo }: TodoListProps) => {
 	const handleStatusUpdate = (id: string) => {
 		updateTodo(
 			todos.map((todo) =>
@@ -99,7 +99,7 @@ interface AddTodoProp {
 	addTodo: Dispatch<SetStateAction<Todo[]>>;
 }
 
-const AddTodo: React.FC<AddTodoProp> = ({ todos, addTodo }) => {
+const AddTodo = ({ todos, addTodo }: AddTodoProp) => {
 	const inputRef = useRef<HTMLInputElement | null>(null);
 
 	const handleAddTodo = () => {
@@ -134,14 +134,14 @@ interface FooterProps {
 	todos: Todo[];
 }
 
-const Footer: React.FC<FooterProps> = ({ todos }) => {
+const Footer = ({ todos }: FooterProps) => {
 	return (
 		<div className="footer">
 			<span>Total todos: {todos.length}</span>
 		</div>
 	);
 };
-const App: React.FC = () => {
+const App = () => {
 	const [theme, SetTheme] = useState<Theme>("light");
 	const [todoList, SetTodoList] = useState(TODO_LIST);
 
